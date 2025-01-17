@@ -1,0 +1,20 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+import time
+
+
+chrome_options = Options()
+chrome_options.add_argument('--ignore-certificate-errors')
+chrome_options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
+
+service = Service("drivers/chromedriver.exe") 
+
+driver = webdriver.Chrome(service=service, options=chrome_options)
+
+driver.maximize_window()
+driver.get("https://demoblaze.com/")
+
+time.sleep(5)
+
+driver.quit()

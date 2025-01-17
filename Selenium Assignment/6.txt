@@ -1,0 +1,72 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+
+service = Service("drivers/chromedriver.exe")
+driver = webdriver.Chrome(service=service)
+driver.maximize_window()
+driver.implicitly_wait(5)
+
+
+def find_element_with_wait(by, value, timeout=10):
+    """Utility function to find an element with explicit wait."""
+    try:
+        element = WebDriverWait(driver, timeout).until(
+            EC.presence_of_element_located((by, value))
+        )
+        return element
+    except TimeoutException:
+        print(f"Element not found with {by}={value}")
+        return None
+
+
+try:
+
+    driver.get("https://www.demoblaze.com/")
+
+
+    home_url = driver.current_url
+    print(f"Home Page URL: {home_url}")
+
+    try:
+
+        item_xpath = '//a[contains(text(), "Samsung galaxy s6")]'
+        item = find_element_with_wait(By.XPATH, item_xpath)
+        if item:
+            item.click()
+
+        add_to_cart_button_xpath = '//a[contains(text(), "Add to cart")]'
+        add_to_cart_button = find_element_with_wait(By.XPATH, add_to_cart_button_xpath)
+        if add_to_cart_button:
+            add_to_cart_button.click()
+
+            try:
+                alert = WebDriverWait(driver, 5).until(
+                    EC.alert_is_present()
+                )
+                alert.accept()  # Accept the alert
+            except TimeoutException:
+                print("No alert found.")
+
+
+            cart_icon_id = "cartur"
+            cart_icon = find_element_with_wait(By.ID, cart_icon_id)
+            if cart_icon:
+                cart_icon.click()
+
+                cart_url = driver.current_url
+                print(f"Cart Page URL: {cart_url}")
+
+    except NoSuchElementException as e:
+        print(f"An error occurred while interacting with the item or cart: {e}")
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+finally:
+
+    driver.quit()

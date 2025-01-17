@@ -1,0 +1,51 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+
+
+chrome_options = Options()
+chrome_options.add_argument("--ignore-certificate-errors")
+
+
+driver = webdriver.Chrome(service=Service("drivers//chromedriver.exe"), options=chrome_options)
+driver.maximize_window()
+
+
+driver.get("https://www.demoblaze.com/")
+
+
+contact_button = driver.find_element(By.LINK_TEXT, "Contact")
+contact_button.click()
+time.sleep(5)
+
+
+
+
+driver.execute_script("alert('This is a JavaScript alert!');")
+time.sleep(2)  
+alert = driver.switch_to.alert
+print("Alert text:", alert.text)
+alert.accept()  
+time.sleep(2)
+
+
+driver.execute_script("confirm('This is a JavaScript confirmation. Click OK or Cancel.');")
+time.sleep(2)  
+confirm = driver.switch_to.alert
+print("Confirmation text:", confirm.text)
+confirm.accept()  
+time.sleep(2)
+
+
+driver.execute_script("prompt('This is a JavaScript prompt. Enter some text.');")
+time.sleep(2)  
+prompt = driver.switch_to.alert
+print("Prompt text:", prompt.text)
+prompt.send_keys("This is a test input")  
+prompt.accept()  
+time.sleep(2)
+
+
+driver.quit()

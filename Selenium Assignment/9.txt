@@ -1,0 +1,26 @@
+from selenium import webdriver
+import pickle
+
+driver = webdriver.Chrome()
+
+try:
+  
+    driver.get('http://example.com')
+
+
+    driver.add_cookie({'name': 'session_id', 'value': '123456'})
+
+    cookies = driver.get_cookies()
+    print('Cookies:', cookies)
+
+    with open('cookies.pkl', 'wb') as cookies_file:
+        pickle.dump(cookies, cookies_file)
+
+
+    driver.delete_cookie('session_id')
+
+ 
+    driver.delete_all_cookies()
+finally:
+
+    driver.quit()

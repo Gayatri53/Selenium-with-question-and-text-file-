@@ -1,0 +1,57 @@
+import time
+
+from selenium import webdriver
+# from selenium.webdriver.common.service import Service
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+
+drivers = webdriver.Chrome(service=Service("driver//chromedriver.exe"))
+drivers.maximize_window()
+drivers.get("https://demoblaze.com/")
+
+navcart = drivers.find_element(By.ID,"cartur")
+navcart.click()
+time.sleep(5)
+
+navplaceoder= drivers.find_element(By.XPATH, '//*[@id="page-wrapper"]/div/div[2]/button')
+navplaceoder.click()
+time.sleep(5)
+
+txt_box_username = drivers.find_element(By.ID, "name")
+txt_box_username.send_keys("ABC")
+
+txt_box_country = drivers.find_element(By.ID, "country")
+txt_box_country.send_keys("Nepal")
+
+txt_box_city  = drivers.find_element(By.ID, "city")
+txt_box_city.send_keys("Pkr")
+
+txt_box_credit = drivers.find_element(By.ID, "card")
+txt_box_credit.send_keys("1234567890")
+
+txt_box_month = drivers.find_element(By.ID, "month")
+txt_box_month.send_keys("August")
+
+txt_box_year = drivers.find_element(By.ID, "year")
+txt_box_year.send_keys("2024")
+
+navpurchase= drivers.find_element(By.XPATH, '//*[@id="orderModal"]/div/div/div[3]/button[2]')
+navpurchase.click()
+
+
+navok= drivers.find_element(By.XPATH, '/html/body/div[10]/div[7]/div/button')
+navok.click()
+time.sleep(5)
+
+
+
+
+
+
+
+
+
+
+
+
+

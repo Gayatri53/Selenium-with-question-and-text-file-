@@ -1,0 +1,44 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+import time
+
+
+service = Service("drivers/chromedriver.exe")
+driver = webdriver.Chrome(service=service)
+driver.maximize_window()
+
+try:
+
+    driver.get("https://www.example.com")
+
+    driver.execute_script("window.open('https://www.example.org', '_blank');")
+
+    time.sleep(2)
+
+
+    window_handles = driver.window_handles
+
+
+    driver.switch_to.window(window_handles[1])
+
+    print(f"Title of the new tab: {driver.title}")
+
+    driver.execute_script("window.open('https://www.example.net', '_blank');")
+
+    time.sleep(2)
+
+    window_handles = driver.window_handles
+
+
+    driver.switch_to.window(window_handles[2])
+
+    print(f"Title of the third tab: {driver.title}")
+
+    driver.switch_to.window(window_handles[0])
+
+    print(f"Title of the original tab: {driver.title}")
+
+finally:
+ 
+    driver.quit()

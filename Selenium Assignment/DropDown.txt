@@ -1,0 +1,39 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.by import By
+import time
+
+# Set up the WebDriver
+service = Service("driver/chromedriver.exe")  # Ensure the path to chromedriver is correct
+driver = webdriver.Chrome(service=service)
+driver.maximize_window()
+
+try:
+    # Open the target website
+    driver.get("https://example.com")  # Replace with the actual URL
+
+    # Locate the dropdown element (using its ID in this example)
+    dropdown_element = driver.find_element(By.ID, "dropdownId")  # Replace with the actual ID of the dropdown
+
+    # Create a Select object for the dropdown
+    select = Select(dropdown_element)
+
+    # Select by visible text
+    select.select_by_visible_text("Option Text")  # Replace with the actual text of the option
+
+    # Select by index
+    # select.select_by_index(2)  # Replace with the actual index of the option
+
+    # Select by value
+    # select.select_by_value("optionValue")  # Replace with the actual value attribute of the option
+
+    # Wait to observe changes
+    time.sleep(3)
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+finally:
+    # Clean up and close the browser
+    driver.quit()

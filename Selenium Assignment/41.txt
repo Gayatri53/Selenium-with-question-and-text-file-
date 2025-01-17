@@ -1,0 +1,29 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+
+def create_chrome_driver():
+    chrome_options = Options()
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+
+   
+    driver = webdriver.Remote(
+        command_executor='http://remote-server.com:4444/wd/hubb',  
+        options=chrome_options
+    )
+    return driver
+
+
+platforms = ["WINDOWS", "MAC", "LINUX"]
+
+for platform in platforms:
+    print(f"Testing on {platform} with Chrome")
+    driver = create_chrome_driver()
+    try:
+        driver.get("https://www.demoblaze.com/")
+      
+        time.sleep(5)
+    finally:
+        driver.quit()

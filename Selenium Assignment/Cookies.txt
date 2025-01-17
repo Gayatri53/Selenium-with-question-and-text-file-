@@ -1,0 +1,17 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+
+# Set up the WebDriver
+service = Service("driver/chromedriver.exe")  # Ensure the path to chromedriver is correct
+driver = webdriver.Chrome(service=service)
+
+# Open a website
+driver.get("https://example.com")  # Replace with the actual URL
+
+# Get all cookies
+cookies = driver.get_cookies()
+for cookie in cookies:
+    print(cookie)
+
+# Clean up
+driver.quit()

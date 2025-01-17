@@ -1,0 +1,40 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.common.by import By
+import time
+
+
+def initialize_chrome_driver():
+
+    chromedriver_path = "drivers/chromedriver.exe"
+
+
+    chrome_options = ChromeOptions()
+
+
+    driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=chrome_options)
+
+    return driver
+
+
+def run_test(driver):
+    try:
+        driver.get("https://www.demoblaze.com/")
+        driver.maximize_window()
+        time.sleep(5)
+
+
+        cart_button = driver.find_element(By.ID, "cartur")
+        assert cart_button.is_displayed(), "Cart button is not displayed"
+
+        print("Test passed")
+
+    finally:
+        driver.quit()
+
+
+
+print("Testing on the latest version of Chrome")
+driver = initialize_chrome_driver()
+run_test(driver)

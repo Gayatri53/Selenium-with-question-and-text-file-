@@ -1,0 +1,37 @@
+import time
+
+from selenium import webdriver
+# from selenium.webdriver.common.service import Service
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.alert import Alert
+from selenium.webdriver.common.by import By
+
+drivers = webdriver.Chrome(service=Service("drivers//chromedriver.exe"))
+drivers.maximize_window()
+drivers.get("https://demo.automationtesting.in/Alerts.html")
+
+simpleNav = drivers.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div[1]/ul/li[1]/a ')
+simpleNav.click()
+
+button1 = drivers.find_element(By.XPATH, '//*[@id="OKTab"]/button')
+button1.click()
+time.sleep(5)
+alert= Alert (drivers)
+alert.accept()
+
+confirmNav =drivers.find_element(By.XPATH, '/html/body/div[1]/div/div/div/div[1]/ul/li[2]/a')
+confirmNav.click()
+
+button2 = drivers.find_element(By.XPATH, '//*[@id="CancelTab"]/button')
+button2.click()
+time.sleep(5)
+alert.dismiss()
+
+text_box_nav = drivers.find_element(By.XPATH, "/html/body/div[1]/div/div/div/div[1]/ul/li[3]/a")
+text_box_nav.click()
+
+button3 = drivers.find_element(By.XPATH, '//*[@id="Textbox"]/button')
+button3.click()
+time.sleep(5)
+alert.send_keys("QA")
+alert.accept()

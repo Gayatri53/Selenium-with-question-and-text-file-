@@ -1,0 +1,31 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.by import By
+import time
+
+# Set up the WebDriver
+service = Service("driver/chromedriver.exe")  # Ensure the path to chromedriver is correct
+driver = webdriver.Chrome(service=service)
+driver.maximize_window()
+
+
+try:
+    # Open the webpage
+    driver.get("https://www.example.com")
+
+    # Allow some time for the page to load
+    time.sleep(2)  # Adjust sleep time as needed
+
+    # Check if the specific text is present on the page
+    text_to_verify = "Example Domain"
+    page_source = driver.page_source
+
+    if text_to_verify in page_source:
+        print(f'The text "{text_to_verify}" is displayed on the webpage.')
+    else:
+        print(f'The text "{text_to_verify}" is not displayed on the webpage.')
+
+finally:
+    # Close the WebDriver
+    driver.quit()

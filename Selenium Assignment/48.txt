@@ -1,0 +1,40 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+
+chrome_options = Options()
+chrome_options.add_argument("--ignore-certificate-errors")  # Ignore SSL/TLS certificate warnings if needed
+
+
+drivers = webdriver.Chrome(service=Service("drivers//chromedriver.exe"), options=chrome_options)
+drivers.maximize_window()
+drivers.get("https://demoblaze.com/")
+
+
+
+wait = WebDriverWait(drivers, 10)
+navLogin = wait.until(EC.element_to_be_clickable((By.ID, "login2")))
+navLogin.click()
+
+wait.until(EC.visibility_of_element_located((By.ID, "logInModal")))
+
+
+txt_box_username = wait.until(EC.visibility_of_element_located((By.ID, "loginusername")))
+txt_box_username.send_keys("testmorning")
+
+
+txt_box_password = wait.until(EC.visibility_of_element_located((By.ID, "loginpassword")))
+txt_box_password.send_keys("test123")
+
+
+loginButton = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="logInModal"]/div/div/div[3]/button[2]')))
+loginButton.click()
+
+
+
+drivers.quit()

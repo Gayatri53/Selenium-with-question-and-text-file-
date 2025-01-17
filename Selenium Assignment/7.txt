@@ -1,0 +1,18 @@
+from datetime import time
+
+from selenium import webdriver
+# from selenium.webdriver.common.service import Service
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+
+drivers = webdriver.Chrome(service=Service("drivers//chromedriver.exe"))
+drivers.maximize_window()
+drivers.get("https://qaecoma.bishalkarki.xyz/index.php")
+
+navwomen = drivers.find_element(By.XPATH, '//*[@id="block_top_menu"]/ul/li[1]/a')
+navwomen.click()
+
+navtshirts = drivers.find_element(By.XPATH, '//*[@id="block_top_menu"]/ul/li[1]/ul/li[1]/ul/li[1]/a' )
+navtshirts.click()
+
+drivers.quit()

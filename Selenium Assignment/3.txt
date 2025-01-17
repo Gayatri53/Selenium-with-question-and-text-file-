@@ -1,0 +1,39 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
+
+
+service = Service("driver/chromedriver.exe")  # Ensure the path to chromedriver is correct
+drivers = webdriver.Chrome(service=service)
+drivers.maximize_window()
+drivers.implicitly_wait(5)
+
+drivers.get("https://www.demoblaze.com/")
+
+try:
+
+    element = drivers.find_element(By.ID, "signin2")
+
+    if element.is_displayed():
+        print("Element is present and visible.")
+    else:
+        print("Element is present but not visible.")
+except NoSuchElementException:
+    print("Element is not present on the webpage.")
+finally:
+
+    time.sleep(5)
+
+    drivers.quit()
+
+
+#The try block lets you test a block of code for errors.
+
+#The except block lets you handle the error.
+
+#The else block lets you execute code when there is no error.
+
+#The finally block lets you execute code, regardless of the result of the try- and except blocks.
+

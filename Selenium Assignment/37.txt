@@ -1,0 +1,53 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+chrome_options = Options()
+
+service = Service("drivers/chromedriver.exe")
+driver = webdriver.Chrome(service=service, options=chrome_options)
+
+try:
+    driver.get("https://www.demoblaze.com/")  
+    print("Page Title:", driver.title)
+
+    try:
+        iframe = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, "iframe"))
+        )
+        print("iFrame found.")
+
+        driver.switch_to.frame(iframe)
+    except Exception as e:
+        print("Error finding or switching to iFrame:", e)
+        driver.quit()
+        exit()
+
+    try:
+        timezone_element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "timezone-element-id"))  # Adjust locator
+        )
+        print(f"Timezone Element Text: {timezone_element.text}")
+
+        timezone_selector = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.ID, "timezone-selector-id"))  # Adjust locator
+        )
+        timezone_selector.click()
+        timezone_option = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//option[@value='America/New_York']"))  # Adjust XPath
+        )
+        timezone_option.click()
+
+        new_timezone_element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "timezone-element-id"))  # Adjust locator
+        )
+        print(f"New Time Zone: {new_timezone_element.text}")
+    except Exception as e:
+        print("Error interacting with elements inside the iFrame:", e)
+
+finally:
+ 
+    driver.quit()

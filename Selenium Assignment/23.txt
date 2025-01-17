@@ -1,0 +1,25 @@
+import time
+from selenium import webdriver
+
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.edge.service import Service as EdgeService
+
+
+x = 1
+if x == 1:
+
+    driver = webdriver.Chrome()
+elif x == 2:
+    driver = webdriver.Firefox()
+
+elif x == 3:
+    driver = webdriver.Edge()
+
+else:
+    ValueError("Invalid value for x. It should be 1, 2, or 3.")
+
+driver.get("https://bishalkarki.xyz")
+
+
+driver.minimize_window()

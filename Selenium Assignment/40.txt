@@ -1,0 +1,42 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+
+
+chrome_options = Options()
+chrome_options.add_argument("--ignore-certificate-errors")
+
+
+driver = webdriver.Chrome(service=Service("drivers/chromedriver.exe"), options=chrome_options)
+
+try:
+    
+    driver.get("https://www.demoblaze.com/")
+    driver.maximize_window()
+    time.sleep(5) 
+
+    element = driver.find_element(By.ID, "cartur")
+
+    
+    assert element.get_attribute("id") == "cartur", "The 'id' attribute is incorrect"
+
+   
+    class_attribute = element.get_attribute("class")
+    print(f"Class attribute: {class_attribute}")
+    assert class_attribute is not None, "The 'class' attribute should not be None"
+
+   
+    href_attribute = element.get_attribute("href")
+    print(f"Href attribute: {href_attribute}")
+    assert href_attribute is not None, "The 'href' attribute should not be None"
+
+ 
+    assert element.is_displayed(), "The element is not displayed on the page"
+
+    print("All assertions passed.")
+
+finally:
+    
+    driver.quit()

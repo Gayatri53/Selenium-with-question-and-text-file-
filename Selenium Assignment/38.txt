@@ -1,0 +1,53 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.common.by import By
+import time
+
+
+def initialize_chrome_driver():
+
+    chromedriver_path = "drivers/chromedriver.exe"
+
+
+    chrome_options = ChromeOptions()
+
+
+    driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=chrome_options)
+
+    return driver
+
+
+def test_responsiveness(driver):
+
+    screen_resolutions = [
+        (1920, 1080),  # Full HD
+        (1366, 768),  # HD
+        (768, 1024),  # Tablet
+        (375, 667),  # Mobile (iPhone 6/7/8)
+        (414, 896)  # Mobile (iPhone X/XS/11 Pro)
+    ]
+
+    try:
+        driver.get("https://www.demoblaze.com/")
+        driver.maximize_window()
+        time.sleep(2)  
+
+        for width, height in screen_resolutions:
+            driver.set_window_size(width, height)
+            time.sleep(2)  
+
+         
+            title = driver.title
+            print(f"Window size: {width}x{height} - Page title: {title}")
+
+           
+
+    finally:
+        driver.quit()
+
+
+
+print("Testing responsiveness of the webpage")
+driver = initialize_chrome_driver()
+test_responsiveness(driver)

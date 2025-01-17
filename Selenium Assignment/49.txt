@@ -1,0 +1,27 @@
+import time
+
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.common.service import Service
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+
+
+chrome_options = Options()
+chrome_options.add_argument("--ignore-certificate-errors")  # Ignore SSL/TLS certificate warnings if needed
+
+# Initialize the Chrome driver
+drivers = webdriver.Chrome(service=Service("drivers//chromedriver.exe"))
+drivers.maximize_window()
+drivers.get("https://demoblaze.com/")
+
+navLogin = drivers.find_element(By.ID, "login2")
+navLogin.click()
+time.sleep(5)
+txt_box_username = drivers.find_element(By.ID, "loginusername")
+txt_box_username.send_keys("testmorning")
+txt_box_password = drivers.find_element(By.ID, "loginpassword")
+txt_box_password.send_keys("test123")
+
+loginButton = drivers.find_element(By.XPATH, '//*[@id="logInModal"]/div/div/div[3]/button[2]')
+loginButton.click()

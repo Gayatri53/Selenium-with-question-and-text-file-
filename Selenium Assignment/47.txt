@@ -1,0 +1,38 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+
+chrome_options = Options()
+chrome_options.add_argument("--ignore-certificate-errors")
+
+
+driver = webdriver.Chrome(service=Service("drivers/chromedriver.exe"), options=chrome_options)
+driver.maximize_window()
+driver.get("https://demoblaze.com/")
+
+
+wait = WebDriverWait(driver, 10)
+
+
+elements_with_aria_roles = wait.until(EC.presence_of_all_elements_located((By.XPATH, "//*[@role]")))
+print(f"Number of elements with ARIA roles: {len(elements_with_aria_roles)}")
+#The script finds all elements with ARIA roles using XPath (//*[@role]). This helps ensure that ARIA attributes are used correctly
+
+images_without_alt = wait.until(EC.presence_of_all_elements_located((By.XPATH, "//img[not(@alt)]")))
+print(f"Number of images without alt text: {len(images_without_alt)}")
+
+
+link_elements = wait.until(EC.presence_of_all_elements_located((By.TAG_NAME, "a")))
+print(f"Number of links on the page: {len(link_elements)}")
+
+
+for index, link in enumerate(link_elements):
+    driver.execute_script("arguments[0].focus();", link)
+print(f"Link {index + 1} href: {link.get_attribute('href')}")
+
+
+driver.quit()

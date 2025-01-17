@@ -1,0 +1,49 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.webdriver.support.ui import Select
+import time
+
+driver = webdriver.Chrome()
+
+driver.implicitly_wait(10)
+
+try:
+
+    driver.get('https://www.demoblaze.com/')
+
+    wait = WebDriverWait(driver, 10)
+
+    try:
+
+        element = wait.until(EC.presence_of_element_located((By.ID, 'element_id')))
+        print("Element is present")
+
+        clickable_element = wait.until(EC.element_to_be_clickable((By.ID, 'clickable_element_id')))
+        clickable_element.click()
+        print("Clicked on the element")
+
+    except TimeoutException:
+        print("Timed out waiting for element to be present or clickable")
+
+    try:
+
+        def condition(driver):
+            try:
+                element = driver.find_element(By.ID, 'fluent_element_id')
+                return element if element.is_displayed() else None
+            except NoSuchElementException:
+                return None
+
+
+
+        print(" found the element")
+
+    except TimeoutException:
+        print(" timed out waiting for element")
+
+finally:
+    
+    driver.quit()

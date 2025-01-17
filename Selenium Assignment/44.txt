@@ -1,0 +1,73 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+
+
+chrome_options = Options()
+chrome_options.add_argument("--ignore-certificate-errors")
+
+
+driver = webdriver.Chrome(service=Service("drivers//chromedriver.exe"), options=chrome_options)
+driver.maximize_window()
+driver.get("https://demoblaze.com/")
+
+
+actions = ActionChains(driver)
+
+
+driver.execute_script("window.scrollBy(0, 500);")
+time.sleep(2)
+
+
+driver.execute_script("window.scrollBy(0, -500);")
+time.sleep(2)
+
+
+navcart = driver.find_element(By.ID, "cartur")
+actions.move_to_element(navcart).perform()
+time.sleep(2)
+
+
+driver.execute_script("document.body.style.zoom='150%'")
+time.sleep(2)
+driver.execute_script("document.body.style.zoom='100%'")
+time.sleep(2)
+
+
+navcart.click()
+time.sleep(5)
+
+navplaceorder = driver.find_element(By.XPATH, '//*[@id="page-wrapper"]/div/div[2]/button')
+navplaceorder.click()
+time.sleep(5)
+
+txt_box_username = driver.find_element(By.ID, "name")
+txt_box_username.send_keys("ABC")
+
+txt_box_country = driver.find_element(By.ID, "country")
+txt_box_country.send_keys("Nepal")
+
+txt_box_city = driver.find_element(By.ID, "city")
+txt_box_city.send_keys("Pkr")
+
+txt_box_credit = driver.find_element(By.ID, "card")
+txt_box_credit.send_keys("1234567890")
+
+txt_box_month = driver.find_element(By.ID, "month")
+txt_box_month.send_keys("August")
+
+txt_box_year = driver.find_element(By.ID, "year")
+txt_box_year.send_keys("2024")
+
+navpurchase = driver.find_element(By.XPATH, '//*[@id="orderModal"]/div/div/div[3]/button[2]')
+navpurchase.click()
+
+navok = driver.find_element(By.XPATH, '/html/body/div[10]/div[7]/div/button')
+navok.click()
+time.sleep(5)
+
+
+driver.quit()

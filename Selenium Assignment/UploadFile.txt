@@ -1,0 +1,41 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+import time
+
+# Set up the WebDriver
+service = Service("driver/chromedriver.exe")  # Ensure the path to chromedriver is correct
+driver = webdriver.Chrome(service=service)
+driver.maximize_window()
+
+try:
+    # Open the target website
+    driver.get("https://www.example.com/upload")  # Replace with the actual URL of the upload page
+
+    # Locate the file input element
+    file_input = driver.find_element(By.ID, "file-upload")  # Replace with the actual locator for the file input
+
+    # Path to the file you want to upload
+    file_path = "/path/to/your/file.txt"  # Replace with the actual file path on your system
+
+    # Send the file path to the file input element
+    file_input.send_keys(file_path)
+
+    # Optional: Submit the form if needed (depends on the website implementation)
+    submit_button = driver.find_element(By.ID, "submit-button")  # Replace with the actual locator for the submit button
+    submit_button.click()
+
+    # Wait for the upload to complete (adjust as needed)
+    time.sleep(5)  # Replace with WebDriverWait if needed for better handling
+
+    # Optional: Verify the upload
+    # (You might want to check for a confirmation message or the presence of the uploaded file)
+    # confirmation_message = driver.find_element(By.ID, "confirmation").text
+    # print(confirmation_message)
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+finally:
+    # Clean up and close the browser
+    driver.quit()

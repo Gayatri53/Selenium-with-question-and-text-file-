@@ -1,0 +1,78 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
+
+# Set up the WebDriver
+service = Service("driver/chromedriver.exe")  # Ensure the path to chromedriver is correct
+driver = webdriver.Chrome(service=service)
+driver.maximize_window()
+driver.implicitly_wait(5)
+
+# List to store captured URLs
+captured_urls = []
+
+
+# Function to capture the current page URL
+def capture_current_url(description):
+    current_url = driver.current_url
+    captured_urls.append((description, current_url))
+    print(f"{description} URL: {current_url}")
+
+
+try:
+    # Open the target website
+    driver.get("https://www.demoblaze.com/")
+
+    # Capture the URL of the home page
+    capture_current_url("Home Page")
+
+    # Add an item to the cart
+    try:
+        # Click on a specific item (adjust the selector as needed)
+        item = driver.find_element(By.XPATH, '//a[contains(text(), "Samsung galaxy s6")]')
+        item.click()
+
+        # Wait for the item page to load
+        time.sleep(2)
+
+        # Add the item to the cart
+        add_to_cart_button = driver.find_element(By.XPATH, '//a[contains(text(), "Add to cart")]')
+        add_to_cart_button.click()
+
+        # Handle any confirmation dialogs (if they appear)
+        try:
+            alert = driver.switch_to.alert
+            alert.accept()  # Accept the alert if it appears
+        except:
+            pass
+
+        # Wait for the action to complete
+        time.sleep(2)
+
+        # Capture the URL after adding the item to the cart
+        # Navigate to the cart page (you can directly use the URL or click on a cart icon)
+        cart_icon = driver.find_element(By.ID, "cartur")
+        cart_icon.click()
+
+        # Wait for the cart page to load
+        time.sleep(2)
+
+        # Capture the URL of the cart page
+        capture_current_url("Cart Page")
+
+    except NoSuchElementException as e:
+        print(f"An error occurred while interacting with the item or cart: {e}")
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+finally:
+    # Clean up and close the browser
+    driver.quit()
+
+# Output captured URLs
+print("\nCaptured URLs:")
+for description, url in captured_urls:
+    print(f"{description}: {url}")

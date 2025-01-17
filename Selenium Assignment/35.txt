@@ -1,0 +1,61 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+
+def set_network_conditions(driver, offline=False, latency=0, throughput=0):
+    """
+    Set network conditions using Chrome DevTools Protocol (CDP).
+
+    Parameters:
+    - driver: WebDriver instance.
+    - offline: Boolean to set offline mode.
+    - latency: Network latency in milliseconds.
+    - throughput: Download throughput in bits per second.
+    """
+
+    driver.execute_cdp_cmd("Network.enable", {})
+
+    # Set network conditions
+    driver.execute_cdp_cmd("Network.emulateNetworkConditions", {
+        "offline": offline,
+        "latency": latency,  # in milliseconds
+        "downloadThroughput": throughput,  # in bits per second
+        "uploadThroughput": throughput  # in bits per second
+    })
+
+def test_network_conditions():
+    # Set up Chrome options
+    chrome_options = Options()
+    chrome_options.add_argument("--remote-debugging-port=9222")  # Use a remote debugging port
+
+    # Path to your ChromeDriver
+    chromedriver_path = "drivers/chromedriver.exe"  # Update with your actual path
+
+    # Initialize the WebDriver
+    driver = webdriver.Chrome(service=Service(chromedriver_path), options=chrome_options)
+
+    try:
+        # Open a webpage
+        driver.get("https://www.demoblaze.com/")
+
+        # Simulate offline mode
+        set_network_conditions(driver, offline=True)
+        print("Testing offline mode")
+        driver.refresh()  # Try to refresh the page to see the effect
+
+        # Simulate network with 100ms latency and 1Mbps throughput
+        set_network_conditions(driver, offline=False, latency=100, throughput=1000000)
+        print("Testing with 100ms latency and 1Mbps throughput")
+        driver.refresh()  # Try to refresh the page to see the effect
+
+        # Simulate network with 500ms latency and 500Kbps throughput
+        set_network_conditions(driver, offline=False, latency=500, throughput=500000)
+        print("Testing with 500ms latency and 500Kbps throughput")
+        driver.refresh()  # Try to refresh the page to see the effect
+
+    finally:
+        # Close the WebDriver
+        driver.quit()
+
+if __name__ == "__main__":
+    test_network_conditions()

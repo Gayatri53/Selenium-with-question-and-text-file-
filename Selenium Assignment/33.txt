@@ -1,0 +1,67 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+chromedriver_path = "drivers/chromedriver.exe"  # Path to your ChromeDriver
+test_data = [
+    {"username": "validUser1", "password": "validPass1", "expected_result": "Welcome, validUser1"},
+    {"username": "invalidUser", "password": "wrongPass", "expected_result": "Invalid credentials"},
+]
+
+def test_login(data):
+    driver = webdriver.Chrome(service=Service(chromedriver_path))
+    driver.maximize_window()
+
+    try:
+        driver.get("https://demoblaze.com/")
+
+        # Open the login modal
+        login_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.ID, "login2"))
+        )
+        login_button.click()
+
+        # Wait for the username and password fields to be visible and interactable
+        username_field = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.ID, "loginusername"))
+        )
+        password_field = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.ID, "loginpassword"))
+        )
+
+        # Input data and submit
+        username_field.clear()
+        password_field.clear()
+        username_field.send_keys(data["username"])
+        password_field.send_keys(data["password"])
+        password_field.send_keys(Keys.RETURN)
+
+        # Wait for the result element to be visible and get the result text
+        result_element = WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, '//*[@id="logInModal"]/div/div/div[3]/button[2]'))
+        )
+        result_text = result_element.text
+
+        # Check if the result matches expected result
+        if result_text == data["expected_result"]:
+            print(f"Test with username '{data['username']}' passed.")
+        else:
+            print(f"Test with username '{data['username']}' failed. Expected '{data['expected_result']}' but got '{result_text}'.")
+
+    except Exception as e:
+        print(f"An error occurred for username '{data['username']}': {e}")
+
+    finally:
+        # Close the WebDriver
+        driver.quit()
+
+def main():
+    for data in test_data:
+        test_login(data)
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,19 @@
+from datetime import time
+
+from selenium import webdriver
+# from selenium.webdriver.common.service import Service
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+
+drivers = webdriver.Chrome(service=Service("driver//chromedriver.exe"))
+drivers.maximize_window()
+drivers.get("https://qaecoma.bishalkarki.xyz/index.php")
+
+search_box = drivers.find_element(By.XPATH, '//*[@id="search_query_top"]')
+search_box.send_keys('t-shirts')
+
+search_button = drivers.find_element(By.XPATH, "//button[@type='submit']")
+search_button.click()
+
+time.sleep(5)
+

@@ -1,0 +1,78 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+
+def capture_network_traffic():
+
+    chrome_options = Options()
+    chrome_options.add_argument("--remote-debugging-port=9222")
+
+
+    chromedriver_path = "drivers/chromedriver.exe"
+
+
+    driver = webdriver.Chrome(service=Service(chromedriver_path), options=chrome_options)
+
+    try:
+
+        driver.get("https://www.example.com")
+
+
+        driver.execute_cdp_cmd("Network.enable", {})
+
+
+        def log_request(request):
+            print("Network Request:", request)
+
+
+        driver.request_interceptor = log_request
+
+
+        driver.implicitly_wait(10)
+
+    finally:
+        # Close the WebDriver
+        driver.quit()
+
+if __name__ == "__main__":
+    capture_network_traffic()
+    from selenium import webdriver
+    from selenium.webdriver.chrome.service import Service
+    from selenium.webdriver.chrome.options import Options
+
+
+    def capture_network_traffic():
+        # Set up Chrome options
+        chrome_options = Options()
+        chrome_options.add_argument("--remote-debugging-port=9222")  # Use a remote debugging port
+
+
+        chromedriver_path = "drivers/chromedriver.exe"
+
+
+        driver = webdriver.Chrome(service=Service(chromedriver_path), options=chrome_options)
+
+        try:
+
+            driver.get("https://www.example.com")
+
+
+            driver.execute_cdp_cmd("Network.enable", {})
+
+
+            def log_request(request):
+                print("Network Request:", request)
+
+
+            driver.request_interceptor = log_request
+
+
+            driver.implicitly_wait(10)
+
+        finally:
+
+            driver.quit()
+
+
+    if __name__ == "__main__":
+        capture_network_traffic()

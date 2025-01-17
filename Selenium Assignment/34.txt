@@ -1,0 +1,20 @@
+import time
+
+from selenium import webdriver
+# from selenium.webdriver.common.service import Service
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+
+drivers= webdriver.Chrome(service=Service("drivers//chromedriver.exe"))
+drivers.maximize_window()
+drivers.get("https://demoblaze.com/")
+
+navcart = drivers.find_element(By.ID,"cartur")
+
+if navcart.is_displayed():
+ print("Element is visible on the webpage.")
+else:
+ print("Element is not visible on the webpage.")
+
+
+

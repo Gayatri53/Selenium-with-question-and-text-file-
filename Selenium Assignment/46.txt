@@ -1,0 +1,71 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+
+
+chrome_options = Options()
+chrome_options.add_argument("--ignore-certificate-errors")
+
+
+driver = webdriver.Chrome(service=Service("drivers/chromedriver.exe"), options=chrome_options)
+driver.maximize_window()
+driver.get("https://www.demoblaze.com/")
+
+# Explicit wait
+wait = WebDriverWait(driver, 10)
+
+try:
+
+    item = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="tbodyid"]/div[1]/div/div/h4/a')))
+    item.click()
+
+
+    add_to_cart_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="tbodyid"]/div[2]/div/a')))
+    add_to_cart_button.click()
+
+    # Confirm the item has been added to the cart by handling the alert
+    alert = wait.until(EC.alert_is_present())
+    alert.accept()
+
+
+    cart_link = wait.until(EC.element_to_be_clickable((By.ID, "cartur")))
+    cart_link.click()
+
+
+    place_order_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="page-wrapper"]/div/div[2]/button')))
+    place_order_button.click()
+
+
+    name_field = wait.until(EC.presence_of_element_located((By.ID, "name")))
+    country_field = driver.find_element(By.ID, "country")
+    city_field = driver.find_element(By.ID, "city")
+    credit_card_field = driver.find_element(By.ID, "card")
+    month_field = driver.find_element(By.ID, "month")
+    year_field = driver.find_element(By.ID, "year")
+
+    name_field.send_keys("ABC")
+    country_field.send_keys("Nepal")
+    city_field.send_keys("Ktm")
+    credit_card_field.send_keys("1234567890123456")
+    month_field.send_keys("August")
+    year_field.send_keys("2024")
+
+
+    purchase_button = wait.until(
+        EC.element_to_be_clickable((By.XPATH, '//*[@id="orderModal"]/div/div/div[3]/button[2]')))
+    purchase_button.click()
+
+    # Wait for the success alert and handle it
+    success_alert = wait.until(EC.alert_is_present())
+    success_alert.accept()
+
+
+    print("Order placed successfully.")
+
+finally:
+    driver.quit()

@@ -1,0 +1,45 @@
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.edge.options import Options as EdgeOptions
+
+
+x = 3
+
+
+if x == 1:
+
+    chrome_options = ChromeOptions()
+    chrome_options.add_argument("--ignore-certificate-errors")
+    driver = webdriver.Chrome(service=ChromeService("drivers//chromedriver.exe"), options=chrome_options)
+
+elif x == 2:
+
+    firefox_options = FirefoxOptions()
+    firefox_options.add_argument("--ignore-certificate-errors")
+    driver = webdriver.Firefox(service=FirefoxService("drivers//geckodriver"), options=firefox_options)
+
+elif x == 3:
+
+    edge_options = EdgeOptions()
+    edge_options.add_argument("--ignore-certificate-errors")
+    driver = webdriver.Edge(service=EdgeService("drivers//msedgedriver"), options=edge_options)
+
+else:
+    raise ValueError("Invalid value for x. It should be 1, 2, or 3.")
+
+
+driver.get("https://bishalkarki.xyz")
+
+
+driver.minimize_window()
+
+
+time.sleep(5)
+
+
+driver.quit()

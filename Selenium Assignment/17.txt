@@ -1,0 +1,30 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+
+service = Service("drivers/chromedriver.exe") 
+driver = webdriver.Chrome(service=service)
+driver.maximize_window()
+
+try:
+ 
+    driver.get("https://www.demoblaze.com/")  
+    time.sleep(2)  
+   
+    iframe = driver.find_element(By.ID, "iframe-id")  
+
+    element_inside_iframe = driver.find_element(By.ID, "element-inside-iframe")  # Adjust locator as needed
+    element_inside_iframe.click()
+
+    time.sleep(2)
+
+    driver.switch_to.default_content()
+
+    main_page_element = driver.find_element(By.ID, "main-page-element")  
+    main_page_element.click()
+
+finally:
+
+    driver.quit()

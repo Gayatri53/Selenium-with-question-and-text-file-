@@ -1,0 +1,33 @@
+import time
+
+from selenium import webdriver
+# from selenium.webdriver.common.service import Service
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+
+drivers = webdriver.Chrome(service=Service("drivers//chromedriver.exe"))
+drivers.maximize_window()
+drivers.get("https://demoblaze.com/")
+print("Opened demoblaze.com")
+time.sleep(2)
+drivers.get("https://bishalkarki.xyz/")
+print("Opened bishalkarki.xyz")
+time.sleep(2)
+
+
+drivers.back()
+print("Navigated back to demoblaze.com")
+
+time.sleep(2)
+
+drivers.forward()
+print("Navigated forward to bishalkarki.xyz")
+time.sleep(2)
+
+drivers.refresh()
+print("Refreshed the bishalkarki.xyz")
+
+time.sleep(2)
+
+drivers.quit()
+
